@@ -40,7 +40,7 @@ export function UsersPage() {
           </div>
         )}
 
-        {!loading && !error && users.length === 0 && (
+        {!loading && !error && users.length === 0 && query && (
           <div className="state-center">
             <p className="state-empty">{interpolate(t.states.notFound, { query })}</p>
             <button className="btn-secondary" onClick={resetToHome}>{t.states.backToList}</button>

@@ -26,7 +26,7 @@ export function useUsers(): UseUsersReturn {
   const [users, setUsers] = useState<User[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPageState] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [query, setQueryState] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
@@ -74,18 +74,20 @@ export function useUsers(): UseUsersReturn {
         } else {
           data = await fetchUsers(LIMIT, skip, controller.signal);
         }
-        setUsers(data.users);
-        setTotal(data.total);
+        if (!controller.signal.aborted) {
+          setUsers(data.users);
+          setTotal(data.total);
+        }
       } catch {
-        if (controller.signal.aborted) {
-          const isTimeout = controller.signal.reason === 'timeout';
-          setError(isTimeout ? t.states.errorTimeout : null);
-        } else {
+        if (controller.signal.reason === 'timeout') {
+          setError(t.states.errorTimeout);
+        } else if (!controller.signal.aborted) {
           setError(t.states.errorNetwork);
         }
       } finally {
-        clearTimeout(timeoutId);
-        setLoading(false);
+        if (!controller.signal.aborted || controller.signal.reason === 'timeout') {
+          setLoading(false);
+        }
       }
     }
 
