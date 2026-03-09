@@ -34,8 +34,19 @@
   text-decoration: underline;
 }
 
-.detail-row-pair {
-  gap: 0 !important;
+li.detail-row-pair {
+  gap: 0;
+}
+
+.detail-company {
+  overflow: hidden;
+}
+
+.detail-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .detail-item {

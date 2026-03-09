@@ -25,9 +25,9 @@ export function Details({ user }: DetailsProps) {
           {user.address.city}
         </span>
       </li>
-      <li>
+      <li className="detail-company">
         <CompanyIcon className="detail-icon" />
-        {user.company.name}
+        <span className="detail-text">{user.company.name}</span>
       </li>
     </ul>
   );
